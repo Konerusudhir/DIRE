@@ -19,7 +19,7 @@ parser.add_argument(
     "-m",
     "--model_path",
     type=str,
-    default="data/exp/ckpt/lsun_adm/model_epoch_latest.pth",
+    default="models/lsun_adm.pth",
 )
 parser.add_argument("--use_cpu", action="store_true", help="uses gpu by default, turn on to use cpu")
 parser.add_argument("--arch", type=str, default="resnet50")
@@ -55,7 +55,9 @@ trans = transforms.Compose(
         transforms.ToTensor(),
     )
 )
-for img_path in tqdm(file_list, dynamic_ncols=True, disable=len(file_list) <= 1):
+# for img_path in tqdm(file_list, dynamic_ncols=True, disable=len(file_list) <= 1):
+for img_path in file_list:
+    print(f"path {img_path}")
     img = Image.open(img_path).convert("RGB")
     img = trans(img)
     if args.aug_norm:
@@ -63,7 +65,8 @@ for img_path in tqdm(file_list, dynamic_ncols=True, disable=len(file_list) <= 1)
     in_tens = img.unsqueeze(0)
     if not args.use_cpu:
         in_tens = in_tens.cuda()
-
+    
+    print(f"Input SHape: {in_tens.shape}")
     with torch.no_grad():
         prob = model(in_tens).sigmoid().item()
     print(f"Prob of being synthetic: {prob:.4f}")

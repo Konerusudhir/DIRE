@@ -12,3 +12,4 @@ tensorboard
 tensorboardX
 tqdm
 blobfile>=1.0.5
+mpi4py

@@ -48,6 +48,9 @@ def main():
     os.makedirs(args.recons_dir, exist_ok=True)
     os.makedirs(args.dire_dir, exist_ok=True)
     logger.log(str(args))
+    
+    device = dist_util.dev()
+    logger.log(f"Device {device}")
 
     model, diffusion = create_model_and_diffusion(**args_to_dict(args, model_and_diffusion_defaults().keys()))
     model.load_state_dict(dist_util.load_state_dict(args.model_path, map_location="cpu"))

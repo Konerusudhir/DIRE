@@ -57,7 +57,7 @@ trans = transforms.Compose(
 )
 # for img_path in tqdm(file_list, dynamic_ncols=True, disable=len(file_list) <= 1):
 for img_path in file_list:
-    print(f"path {img_path}")
+    # print(f"path {img_path}")
     img = Image.open(img_path).convert("RGB")
     img = trans(img)
     if args.aug_norm:
@@ -66,7 +66,7 @@ for img_path in file_list:
     if not args.use_cpu:
         in_tens = in_tens.cuda()
     
-    print(f"Input SHape: {in_tens.shape}")
+    # print(f"Input SHape: {in_tens.shape}")
     with torch.no_grad():
         prob = model(in_tens).sigmoid().item()
-    print(f"Prob of being synthetic: {prob:.4f}")
+    print(f"Prob of being synthetic: {prob:.4f}  {img_path}")
